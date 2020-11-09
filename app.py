@@ -1,6 +1,7 @@
 #importing libraries
 import os,cv2
 import numpy as np
+from skimage import io
 import flask
 from flask import jsonify
 import pickle
@@ -29,10 +30,14 @@ def index():
     if flask.request.method == 'POST':
         # Get image URL as input
         image_url = flask.request.form['url_field']
-        image = cv2.imread(image_url)
-        processed_img = image/255
-        prediction = classify(processed_img, model)
-        return flask.render_template('index.html', result = str(prediction[0]))
+        if image_url:
+            image = io.imread(image_url)
+            # image = cv2.imread(image_url)
+            scaled_img = image/255
+            processed_img = scaled_img.reshape(-1,480,480,3)
+            # input_shape=(480, 480, 3)
+            prediction = classify(processed_img, model)
+            return flask.render_template('index.html', result = str(prediction[0]))
 
 
 if __name__=='__main__':
