@@ -1,10 +1,8 @@
 #importing libraries
 import os,cv2
-import numpy as np
 from skimage import io
+import numpy as np
 import flask
-from flask import jsonify
-import pickle
 from flask import Flask, render_template, request
 from tensorflow.keras.models import load_model
 
@@ -32,11 +30,9 @@ def index():
         image_url = flask.request.form['url_field']
         if image_url:
             image = io.imread(image_url)
-            # image = cv2.imread(image_url)
             scaled_img = image/255
             processed_img = cv2.resize(scaled_img, (480,480))
             processed_img = np.expand_dims(processed_img, axis=0)
-            # input_shape=(480, 480, 3)
             prediction = classify(processed_img, model)
             return flask.render_template('index.html', result = str(prediction))
 

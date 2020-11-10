@@ -2,3 +2,4 @@ flask
 pandas
 gunicorn
 tensorflow
+cv2
